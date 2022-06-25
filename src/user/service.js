@@ -2,7 +2,8 @@ const User = require("../../model/User");
 
 // splitting the functions
 async function getUsers() {
-  return await User.find();
+  // return await User.find();
+  return await User.find().populate("contacts");
 }
 
 async function getById(id) {

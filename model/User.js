@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
     min: 6,
     max: 1024,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   contacts: [
     {
       type: mongoose.Schema.Types.ObjectId,
