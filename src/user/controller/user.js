@@ -1,6 +1,8 @@
 const User = require("../../../model/User");
-const { getUsers, getById, addUser } = require("../service");
+const { getUsers, getById, addUser, getByEmail } = require("../service");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const TOKEN_SECRET = process.env.TOKEN_SECRET || "";
 
 async function get(req, res) {
   try {
@@ -39,8 +41,39 @@ async function register(req, res) {
   }
 }
 
+async function login(req, res) {
+  try {
+    // in case email not found
+    const user = await getByEmail(req.body.email);
+    if (!user) return res.status(400).send("invalid credentials");
+
+    // in case email available but password doesn't match
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!validPassword) return res.status(400).send("invalid credentials");
+
+    // when defining a token, it needs to have a secret.
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      TOKEN_SECRET
+    );
+
+    return res.header("auth-token", token).send(token);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
 // exporting my functions
 module.exports = {
   get,
   register,
+  login,
 };
