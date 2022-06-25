@@ -34,10 +34,12 @@ async function register(req, res) {
     console.log(hashPassword);
 
     const addUserResult = await addUser(req.body, hashPassword);
+    console.log("addUserResult => ", addUserResult);
     // return res.send(result);
     return res.send({ user: addUserResult._id });
   } catch (error) {
     console.log(error);
+    return res.send(error);
   }
 }
 
