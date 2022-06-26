@@ -1,5 +1,6 @@
 const User = require("../../../model/User");
-// const Contact = require("../../../model/Contact");
+const Contact = require("../../../model/Contact");
+
 const {
   getUsers,
   getById,
@@ -107,10 +108,30 @@ async function add(req, res) {
   }
 }
 
+async function updateContact(req, res) {
+  try {
+    const contact = await Contact.updateOne({
+      $set: {
+        fullName: req.body.fullName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        relationStatus: req.body.relationStatus,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        user: req.body.user,
+      },
+    });
+    return res.send(contact);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // exporting my functions
 module.exports = {
   get,
   register,
   login,
   add,
+  updateContact,
 };
