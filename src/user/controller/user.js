@@ -1,5 +1,12 @@
 const User = require("../../../model/User");
-const { getUsers, getById, addUser, getByEmail } = require("../service");
+// const Contact = require("../../../model/Contact");
+const {
+  getUsers,
+  getById,
+  addUser,
+  getByEmail,
+  addContact,
+} = require("../service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const TOKEN_SECRET = process.env.TOKEN_SECRET || "";
@@ -73,9 +80,37 @@ async function login(req, res) {
   }
 }
 
+// adding a new contact to the user
+async function add(req, res) {
+  try {
+    console.log(req.body);
+
+    const newContact = await addContact(req.body);
+    console.log("newContact =>", newContact);
+
+    const updateUser = await User.updateOne(
+      {
+        _id: newContact.user,
+      },
+      {
+        $push: {
+          contacts: newContact._id,
+        },
+      }
+    );
+    console.log("updateUser =>", updateUser);
+
+    return res.status(200).send(newContact); // 200
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
 // exporting my functions
 module.exports = {
   get,
   register,
   login,
+  add,
 };

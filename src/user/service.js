@@ -1,4 +1,5 @@
 const User = require("../../model/User");
+const Contact = require("../../model/Contact");
 
 // splitting the functions
 async function getUsers() {
@@ -7,7 +8,7 @@ async function getUsers() {
 }
 
 async function getById(id) {
-  return await User.findById(id);
+  return await User.findById(id).populate("contacts");
 }
 
 async function addUser(body, hashPassword) {
@@ -33,10 +34,34 @@ async function getByEmail(email) {
   });
 }
 
+async function addContact(body) {
+  const {
+    fullName,
+    phoneNumber,
+    relationStatus,
+    email,
+    user,
+    longitude,
+    latitude,
+  } = body;
+
+  const contact = new Contact({
+    fullName,
+    phoneNumber,
+    relationStatus,
+    email,
+    user,
+    longitude,
+    latitude,
+  });
+
+  return await contact.save();
+}
+
 module.exports = {
   getUsers,
   getById,
   addUser,
   getByEmail,
-  //testing
+  addContact,
 };

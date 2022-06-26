@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { get, register, login } = require("./controller/user"); //getting the functions exported from controller/user.js
+const { get, register, login, add } = require("./controller/user"); //getting the functions exported from controller/user.js
 const router = Router();
 const testMiddleware = require("../../middleware/test");
 
