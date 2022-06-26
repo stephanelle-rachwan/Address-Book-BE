@@ -131,9 +131,9 @@ async function updateContact(req, res) {
 // deleting an existing contact
 async function removeContact(req, res) {
   try {
-    const contact = await Contact.findOne({ _id: req.query.id });
-    if (!contact) console.log(404);
-
+    curr_id = req.query.id;
+    const contact = await Contact.findOne({ curr_id });
+    // if (!contact) console.log(404);
     const deleteResult = await contact.remove();
 
     await User.updateMany(
@@ -146,8 +146,6 @@ async function removeContact(req, res) {
     console.log(error);
   }
 }
-
-// await Category.updateMany({ _id: product.categories }, { $pull: { products: product._id } });
 
 // exporting my functions
 module.exports = {
