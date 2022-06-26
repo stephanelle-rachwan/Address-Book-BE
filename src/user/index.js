@@ -6,5 +6,6 @@ const testMiddleware = require("../../middleware/test");
 router.get("/", get);
 router.post("/register", register);
 router.post("/login", login);
+router.post("/addContact", add);
 
 module.exports = router;

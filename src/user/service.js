@@ -38,4 +38,5 @@ module.exports = {
   getById,
   addUser,
   getByEmail,
+  //testing
 };
