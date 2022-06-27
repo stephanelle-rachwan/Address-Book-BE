@@ -57,10 +57,13 @@ async function addContact(body) {
 
   return await contact.save();
 }
-
+async function getContactByPhone(number) {
+  return await Contact.find({ phoneNumber: number });
+}
 module.exports = {
   getUsers,
   getById,
+  getContactByPhone,
   addUser,
   getByEmail,
   addContact,

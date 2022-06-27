@@ -4,6 +4,7 @@ const Contact = require("../../../model/Contact");
 const {
   getUsers,
   getById,
+  getContactByPhone,
   addUser,
   getByEmail,
   addContact,
@@ -131,15 +132,16 @@ async function updateContact(req, res) {
 // deleting an existing contact
 async function removeContact(req, res) {
   try {
-    curr_id = req.query.id;
-    const contact = await Contact.findOne({ curr_id });
-    // if (!contact) console.log(404);
-    const deleteResult = await contact.remove();
+    const result = await getContactByPhone(req.query.phoneNumber);
+    const contact = await result;
+    // const contact = await Contact.findOne({ curr_id });
+    if (!contact) console.log(404);
+    const deleteResult = await Contact.remove(contact[0]);
 
-    await User.updateMany(
-      { _id: contact.user },
-      { $pull: { contacts: contact._id } }
-    );
+    // await User.updateMany(
+    //   { _id: contact.user },
+    //   { $pull: { contacts: contact._id } }
+    // );
 
     return res.send("contact removed");
   } catch (error) {
